@@ -283,12 +283,18 @@ body {
 }
 
 .wheel-segment span {
-    transform: rotate(-90deg);
+    transform: rotate(-90deg) translateX(-50%);
     font-size: 1.4rem;
     font-weight: 800;
     line-height: 1.1;
     position: absolute;
     top: 15%;
+    left: 50%;
+    transform-origin: center center;
+    white-space: nowrap;
+    display: block;
+    width: auto;
+    text-align: center;
 }
 
 .segment-3 span,
@@ -500,9 +506,36 @@ body {
         font-size: 2rem;
     }
     
+    .wheel-container {
+        padding: 1rem;
+        max-width: 100%;
+    }
+    
+    .wheel-wrapper {
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
     .wheel {
         width: 380px;
         height: 380px;
+        max-width: 90vw;
+        max-height: 90vw;
+    }
+    
+    .wheel-segment span {
+        font-size: 1.2rem;
+        top: 12%;
+    }
+    
+    .segment-3 span,
+    .segment-4 span {
+        font-size: 1rem;
+        line-height: 1.0;
+    }
+    
+    .segment-5 span {
+        font-size: 1.1rem;
     }
     
     .wheel-spin-btn {
@@ -544,27 +577,66 @@ body {
         padding: 1rem;
     }
     
-    .wheel {
-        width: 340px;
-        height: 340px;
+    .wheel-container {
+        padding: 0.5rem;
     }
     
-    .wheel-segment span {
-        font-size: 1.2rem;
-        margin-left: 28%;
-        margin-top: 10%;
+    .wheel-header h2 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
     }
     
-    .wheel-spin-btn {
-        width: 80px;
-        height: 80px;
+    .wheel-header p {
+        margin-bottom: 2rem;
         font-size: 1rem;
     }
     
-    .wheel-wrapper::before {
+    .wheel {
+        width: 320px;
+        height: 320px;
+        max-width: 85vw;
+        max-height: 85vw;
+        border-width: 6px;
+    }
+    
+    .wheel-segment {
+        font-size: 1rem;
+    }
+    
+    .wheel-segment span {
+        font-size: 1rem;
+        font-weight: 700;
+        top: 10%;
+        line-height: 1.1;
+    }
+    
+    .segment-3 span,
+    .segment-4 span {
+        font-size: 0.9rem;
+        line-height: 1.0;
+    }
+    
+    .segment-5 span {
+        font-size: 0.95rem;
+    }
+    
+    .wheel-spin-btn {
         width: 70px;
-        height: 45px;
-        bottom: -45px;
+        height: 70px;
+        font-size: 0.9rem;
+        border-width: 4px;
+    }
+    
+    .wheel-wrapper::before {
+        width: 60px;
+        height: 40px;
+        bottom: -40px;
+    }
+    
+    .wheel-pointer {
+        border-left-width: 12px;
+        border-right-width: 12px;
+        border-top-width: 20px;
     }
     
     .input-group {
@@ -580,5 +652,95 @@ body {
     .spin-btn {
         width: 100%;
         min-width: unset;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+    .wheel {
+        width: 280px;
+        height: 280px;
+        max-width: 80vw;
+        max-height: 80vw;
+        border-width: 4px;
+    }
+    
+    .wheel-segment span {
+        font-size: 0.85rem;
+        font-weight: 600;
+        top: 8%;
+    }
+    
+    .segment-3 span,
+    .segment-4 span {
+        font-size: 0.75rem;
+    }
+    
+    .segment-5 span {
+        font-size: 0.8rem;
+    }
+    
+    .wheel-spin-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 0.8rem;
+        border-width: 3px;
+    }
+    
+    .wheel-wrapper::before {
+        width: 50px;
+        height: 35px;
+        bottom: -35px;
+    }
+    
+    .wheel-pointer {
+        border-left-width: 10px;
+        border-right-width: 10px;
+        border-top-width: 18px;
+    }
+    
+    .wheel-header h2 {
+        font-size: 1.7rem;
+    }
+    
+    .wheel-header p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+    .wheel-container {
+        padding: 0.5rem;
+    }
+    
+    .wheel-header {
+        margin-bottom: 1rem;
+    }
+    
+    .wheel-header h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .wheel-header p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .wheel {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .wheel-segment span {
+        font-size: 0.9rem;
+        top: 10%;
+    }
+    
+    .wheel-spin-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 0.8rem;
     }
 }
