@@ -284,7 +284,7 @@ body {
 
 .wheel-segment span {
     transform: rotate(-90deg) translateX(-50%);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 800;
     line-height: 1.1;
     position: absolute;
@@ -299,12 +299,12 @@ body {
 
 .segment-3 span,
 .segment-4 span {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     line-height: 1.0;
 }
 
 .segment-5 span {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .wheel-pointer {
@@ -524,18 +524,18 @@ body {
     }
     
     .wheel-segment span {
-        font-size: 1.2rem;
+        font-size: 1rem;
         top: 12%;
     }
     
     .segment-3 span,
     .segment-4 span {
-        font-size: 1rem;
+        font-size: 0.85rem;
         line-height: 1.0;
     }
     
     .segment-5 span {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
     }
     
     .wheel-spin-btn {
@@ -604,7 +604,7 @@ body {
     }
     
     .wheel-segment span {
-        font-size: 1rem;
+        font-size: 0.8rem;
         font-weight: 700;
         top: 10%;
         line-height: 1.1;
@@ -612,12 +612,12 @@ body {
     
     .segment-3 span,
     .segment-4 span {
-        font-size: 0.9rem;
+        font-size: 0.7rem;
         line-height: 1.0;
     }
     
     .segment-5 span {
-        font-size: 0.95rem;
+        font-size: 0.75rem;
     }
     
     .wheel-spin-btn {
@@ -666,18 +666,18 @@ body {
     }
     
     .wheel-segment span {
-        font-size: 0.85rem;
+        font-size: 0.7rem;
         font-weight: 600;
         top: 8%;
     }
     
     .segment-3 span,
     .segment-4 span {
-        font-size: 0.75rem;
+        font-size: 0.6rem;
     }
     
     .segment-5 span {
-        font-size: 0.8rem;
+        font-size: 0.65rem;
     }
     
     .wheel-spin-btn {
@@ -734,7 +734,7 @@ body {
     }
     
     .wheel-segment span {
-        font-size: 0.9rem;
+        font-size: 0.75rem;
         top: 10%;
     }
     
