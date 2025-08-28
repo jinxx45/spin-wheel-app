@@ -71,7 +71,20 @@ function isValidEmail(email) {
 
 // Database Functions
 async function saveEmailToDatabase(email) {
-    const apiUrl = '/api/save-email'; // This will be handled by serverless function
+    // Check if we're running locally via file:// protocol
+    if (window.location.protocol === 'file:') {
+        console.log('Running locally - email would be saved:', email);
+        // Simulate a successful save for local development
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve({ success: true, message: 'Email saved locally (demo mode)' });
+            }, 1000);
+        });
+    }
+    
+    // Use different URL based on environment for actual deployments
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const apiUrl = isLocalhost ? '/.netlify/functions/save-email' : '/api/save-email';
     
     try {
         const response = await fetch(apiUrl, {
@@ -172,23 +185,24 @@ function showResult(prize, type) {
     // Update result text based on prize type
     const resultText = document.querySelector('.result-content > p');
     const resultEmailText = document.querySelector('.result-email');
+    const shopButton = document.querySelector('.shop-now-btn');
     
     if (type === 'retry') {
         resultText.textContent = 'Spin the wheel again for another chance!';
-        resultEmailText.style.display = 'none';
-        document.querySelector('.shop-now-btn').textContent = 'Spin Again';
+        if (resultEmailText) resultEmailText.style.display = 'none';
+        if (shopButton) shopButton.textContent = 'Spin Again';
     } else if (type === 'nothing') {
         resultText.textContent = 'Don\'t worry, you can try again later!';
-        resultEmailText.style.display = 'none';
-        document.querySelector('.shop-now-btn').textContent = 'Try Again';
+        if (resultEmailText) resultEmailText.style.display = 'none';
+        if (shopButton) shopButton.textContent = 'Try Again';
     } else if (type === 'gift') {
         resultText.textContent = 'Congratulations! You won a free gift!';
-        resultEmailText.style.display = 'block';
-        document.querySelector('.shop-now-btn').textContent = 'Claim Gift';
+        if (resultEmailText) resultEmailText.style.display = 'block';
+        if (shopButton) shopButton.textContent = 'Claim Gift';
     } else {
         resultText.textContent = 'Your exclusive discount has been applied!';
-        resultEmailText.style.display = 'block';
-        document.querySelector('.shop-now-btn').textContent = 'Shop Now';
+        if (resultEmailText) resultEmailText.style.display = 'block';
+        if (shopButton) shopButton.textContent = 'Shop Now';
     }
     
     setTimeout(() => {
@@ -214,25 +228,27 @@ function resetApp() {
     }, 300);
 }
 
-// Shop Now Button Handler
-document.querySelector('.shop-now-btn').addEventListener('click', function() {
-    const prize = discountAmount.textContent;
-    const buttonText = this.textContent;
-    
-    if (buttonText === 'Spin Again' || buttonText === 'Try Again') {
-        // Reset to wheel section for another spin
-        resetToWheel();
-    } else if (buttonText === 'Claim Gift') {
-        alert(`Congratulations! Your free scrunchie will be sent to ${userEmail}. Thank you for playing!`);
-        setTimeout(() => {
-            resetApp();
-        }, 2000);
-    } else {
-        // Regular discount
-        alert(`Congratulations! You have a ${prize}! Redirecting to shop...`);
-        setTimeout(() => {
-            resetApp();
-        }, 2000);
+// Shop Now Button Handler - Use event delegation to handle dynamically added button
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('shop-now-btn')) {
+        const prize = discountAmount.textContent;
+        const buttonText = e.target.textContent;
+        
+        if (buttonText === 'Spin Again' || buttonText === 'Try Again') {
+            // Reset to wheel section for another spin
+            resetToWheel();
+        } else if (buttonText === 'Claim Gift') {
+            alert(`Congratulations! Your free scrunchie will be sent to ${userEmail}. Thank you for playing!`);
+            setTimeout(() => {
+                resetApp();
+            }, 2000);
+        } else {
+            // Regular discount
+            alert(`Congratulations! You have a ${prize}! Redirecting to shop...`);
+            setTimeout(() => {
+                resetApp();
+            }, 2000);
+        }
     }
 });
 

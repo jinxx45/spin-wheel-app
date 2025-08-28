@@ -1,2 +1,0 @@
-# No Python dependencies required for static site hosting
-# This file is required for Heroku Python buildpack
