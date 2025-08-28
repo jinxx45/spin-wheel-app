@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin to Win - Exclusive Discount</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Email Input Section -->
+    <div id="email-section" class="section active">
+        <div class="container">
+            <div class="logo">
+                <h1>label roh</h1>
+                <p>Premium Fashion</p>
+            </div>
+            
+            <div class="promotion-content">
+                <h2>Exclusive Discount Awaits</h2>
+                <p>Sign in to win exciting offers</p>
+                
+                <form id="email-form" class="email-form">
+                    <div class="input-group">
+                        <input 
+                            type="email" 
+                            id="email-input" 
+                            placeholder="Enter your email address" 
+                            required
+                        >
+                        <button type="submit" class="spin-btn">
+                            Spin to Win
+                        </button>
+                    </div>
+                    <p class="disclaimer">*No purchase necessary. Terms and conditions apply.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spin Wheel Section -->
+    <div id="wheel-section" class="section">
+        <div class="wheel-container">
+            <div class="wheel-header">
+                <h2>Your Discount Awaits!</h2>
+                <p>Click the wheel to spin and reveal your exclusive discount</p>
+            </div>
+            
+            <div class="wheel-wrapper">
+                <div class="wheel" id="wheel">
+                    <div class="wheel-segment segment-1" data-prize="5% OFF">
+                        <span>5%<br>OFF</span>
+                    </div>
+                    <div class="wheel-segment segment-2" data-prize="10% OFF">
+                        <span>10%<br>OFF</span>
+                    </div>
+                    <div class="wheel-segment segment-3" data-prize="Spin again">
+                        <span>Spin<br>again</span>
+                    </div>
+                    <div class="wheel-segment segment-4" data-prize="Better luck next time">
+                        <span>Better luck<br>next time</span>
+                    </div>
+                    <div class="wheel-segment segment-5" data-prize="Free scrunchie">
+                        <span>Free<br>scrunchie</span>
+                    </div>
+                    <div class="wheel-segment segment-6" data-prize="20% OFF">
+                        <span>20%<br>OFF</span>
+                    </div>
+                </div>
+                <div class="wheel-pointer"></div>
+                <button id="spin-button" class="wheel-spin-btn">SPIN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Section -->
+    <div id="result-section" class="section">
+        <div class="result-container">
+            <div class="result-content">
+                <h2>Congratulations!</h2>
+                <div class="discount-display">
+                    <span id="discount-amount">10%</span>
+                    <span class="discount-text">OFF</span>
+                </div>
+                <p>Your exclusive discount has been applied!</p>
+                <p class="result-email">Your email has been saved: <span id="user-email"></span></p>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Saving your email...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

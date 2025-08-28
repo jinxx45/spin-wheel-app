@@ -1,0 +1,31 @@
+{
+  "name": "spin-wheel-app",
+  "version": "1.0.0",
+  "description": "A clothing store promotion app with spin-the-wheel discount feature",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step required for static site'",
+    "start": "python -m http.server 8000",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "spin-wheel",
+    "discount",
+    "promotion",
+    "clothing-store",
+    "mongodb",
+    "netlify"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.10.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
