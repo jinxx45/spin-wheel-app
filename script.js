@@ -84,7 +84,7 @@ async function saveEmailToDatabase(email) {
     
     // Use different URL based on environment for actual deployments
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const apiUrl = isLocalhost ? '/.netlify/functions/save-email' : '/api/save-email';
+    const apiUrl = isLocalhost ? '/.netlify/functions/email-notify' : '/api/save-email';
     
     try {
         const response = await fetch(apiUrl, {

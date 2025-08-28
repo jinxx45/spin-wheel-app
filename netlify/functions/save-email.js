@@ -136,6 +136,12 @@ exports.handler = async (event, context) => {
 
   } catch (error) {
     console.error('Error processing request:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      name: error.name,
+      stack: error.stack
+    });
 
     // Handle specific MongoDB errors
     if (error.code === 11000) {
@@ -156,7 +162,10 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ 
         error: 'Internal Server Error',
         message: 'Failed to save email. Please try again later.',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        details: error.message,
+        mongoUri: MONGODB_URI ? 'SET' : 'NOT SET',
+        dbName: DB_NAME,
+        collectionName: COLLECTION_NAME
       })
     };
   }

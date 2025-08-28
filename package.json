@@ -20,7 +20,7 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "^6.3.0"
+    "mongodb": "^6.19.0"
   },
   "devDependencies": {
     "netlify-cli": "^17.10.1"

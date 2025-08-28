@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Email Save</title>
+</head>
+<body>
+    <h1>Test Email Saving</h1>
+    <button onclick="testEmail()">Test Save Email</button>
+    <div id="result"></div>
+
+    <script>
+        async function testEmail() {
+            const testEmail = 'test@example.com';
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                resultDiv.innerHTML = 'Testing...';
+                
+                const response = await fetch('/.netlify/functions/save-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: testEmail,
+                        timestamp: new Date().toISOString(),
+                        userAgent: navigator.userAgent
+                    })
+                });
+                
+                const result = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h3>Response:</h3>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                    <p>Status: ${response.status}</p>
+                `;
+                
+                console.log('Full response:', result);
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3>Error:</h3>
+                    <p style="color: red;">${error.message}</p>
+                `;
+                console.error('Test error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
