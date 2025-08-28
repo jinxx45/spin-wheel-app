@@ -105,6 +105,17 @@ async function saveEmailToDatabase(email) {
         
         const result = await response.json();
         console.log('Email saved successfully:', result);
+        
+        // Show user confirmation
+        if (result.success) {
+            console.log('✅ Email stored in database:', email);
+            if (result.duplicate) {
+                console.log('📧 Email was already registered');
+            } else {
+                console.log('🆕 New email added to database');
+            }
+        }
+        
         return result;
     } catch (error) {
         console.error('Error saving email:', error);
