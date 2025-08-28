@@ -82,9 +82,9 @@ async function saveEmailToDatabase(email) {
         });
     }
     
-    // Use different URL based on environment for actual deployments
-    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const apiUrl = isLocalhost ? '/.netlify/functions/email-notify' : '/api/save-email';
+    // Use different functions based on environment
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    const apiUrl = isProduction ? '/.netlify/functions/save-email' : '/.netlify/functions/email-notify';
     
     try {
         const response = await fetch(apiUrl, {

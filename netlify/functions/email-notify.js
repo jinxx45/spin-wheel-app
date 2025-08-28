@@ -54,9 +54,16 @@ exports.handler = async (event, context) => {
     console.log('IP Address:', event.headers['x-forwarded-for'] || 'Unknown');
     console.log('----------------------------');
 
-    // For production, you could integrate with:
-    // - Emailjs (send yourself an email)
-    // - Zapier webhook
+    // Send email notification if NOTIFY_EMAIL is set
+    const notifyEmail = process.env.NOTIFY_EMAIL;
+    if (notifyEmail) {
+      // Here you could integrate with EmailJS, SendGrid, etc.
+      console.log(`📧 Would notify ${notifyEmail} about new submission: ${email}`);
+    }
+    
+    // For production, you could also integrate with:
+    // - EmailJS (send yourself an email)
+    // - Zapier webhook  
     // - Google Sheets API
     // - Airtable API
     
