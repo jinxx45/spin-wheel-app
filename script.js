@@ -356,8 +356,7 @@ addTouchSupport();
 function preloadAssets() {
     // Preload Google Fonts
     const fontLinks = [
-        'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap',
-        'https://fonts.googleapis.com/css2?family=Callingstone&display=swap'
+        'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap'
     ];
     
     fontLinks.forEach(link => {
