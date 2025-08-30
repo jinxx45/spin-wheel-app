@@ -260,6 +260,10 @@ function showResult(prize, type) {
     if (type === 'retry') {
         resultText.textContent = 'Spin the wheel again for another chance!';
         if (resultEmailText) resultEmailText.style.display = 'none';
+        
+        // Add spin again button for retry outcomes
+        const actionButtons = document.querySelector('.action-buttons') || createActionButtonsContainer();
+        actionButtons.innerHTML = '<button class="spin-again-btn">🎡 Spin Again</button>';
     } else if (type === 'nothing') {
         resultText.textContent = 'Better luck next time!';
         if (resultEmailText) resultEmailText.style.display = 'none';
@@ -303,9 +307,38 @@ function resetApp() {
     }, 300);
 }
 
-// No button handler needed - buttons removed
+// Create action buttons container if it doesn't exist
+function createActionButtonsContainer() {
+    const resultContent = document.querySelector('.result-content');
+    const actionButtons = document.createElement('div');
+    actionButtons.className = 'action-buttons';
+    resultContent.appendChild(actionButtons);
+    return actionButtons;
+}
 
-// Function removed - no longer needed as we use resetApp() for new games
+// Handle spin again button clicks
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('spin-again-btn')) {
+        // Go back to wheel section for another spin
+        resetToWheelForSpinAgain();
+    }
+});
+
+// Reset to wheel section for "Spin Again" results
+function resetToWheelForSpinAgain() {
+    resultSection.classList.remove('active');
+    setTimeout(() => {
+        wheelSection.classList.add('active');
+        // Reset wheel rotation for next spin
+        wheel.style.transition = 'transform 1s ease-out';
+        wheel.style.transform = 'rotate(0deg)';
+        
+        // Restore normal transition after reset
+        setTimeout(() => {
+            wheel.style.transition = 'transform 4s cubic-bezier(0.23, 1, 0.32, 1)';
+        }, 1000);
+    }, 300);
+}
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', function() {
