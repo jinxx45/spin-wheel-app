@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator for Label Roh Spin Wheel</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #000000;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .header p {
+            color: #666666;
+            font-size: 1.1rem;
+        }
+        
+        .url-display {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: #333;
+            word-break: break-all;
+        }
+        
+        .qr-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+            display: inline-block;
+        }
+        
+        #qrcode {
+            margin: 1rem 0;
+        }
+        
+        .download-section {
+            margin: 2rem 0;
+        }
+        
+        .download-btn {
+            background: #000000;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: #333333;
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background: #e8f4f8;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .instructions ul {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            color: #666666;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">label roh</div>
+        <div class="tagline">Designer Westernwear</div>
+        <h1>🎡 Spin Wheel QR Code</h1>
+        <p>Scan to access the exclusive discount spin wheel</p>
+    </div>
+    
+    <div class="url-display">
+        <strong>Website URL:</strong><br>
+        https://fantastic-gecko-3825ce.netlify.app/
+    </div>
+    
+    <div class="qr-container">
+        <h3>📱 Scan with your phone camera</h3>
+        <canvas id="qrcode"></canvas>
+        <p style="color: #666; margin-top: 1rem; font-size: 0.9rem;">
+            Point your camera at this QR code to visit the spin wheel
+        </p>
+    </div>
+    
+    <div class="download-section">
+        <button class="download-btn" onclick="downloadQR()">📥 Download QR Code</button>
+        <button class="download-btn" onclick="printQR()">🖨️ Print QR Code</button>
+    </div>
+    
+    <div class="instructions">
+        <h3>📋 How to Use This QR Code:</h3>
+        <ul>
+            <li><strong>For Customers:</strong> Open your phone camera and point it at the QR code</li>
+            <li><strong>For Marketing:</strong> Add this QR code to flyers, business cards, or store displays</li>
+            <li><strong>For Events:</strong> Display this QR code at fashion shows or pop-up shops</li>
+            <li><strong>For Social Media:</strong> Share the QR code image on Instagram, Facebook, etc.</li>
+        </ul>
+    </div>
+    
+    <div class="instructions">
+        <h3>✨ What Happens When Scanned:</h3>
+        <ul>
+            <li>📧 Customer enters their email address</li>
+            <li>🎡 They spin the wheel for exclusive discounts</li>
+            <li>🎁 They win discounts (5%, 10%, 20%) or free scrunchies</li>
+            <li>💾 Their email is saved to your MongoDB database</li>
+            <li>📱 Works perfectly on all mobile devices</li>
+        </ul>
+    </div>
+
+    <script>
+        // Generate QR Code
+        const canvas = document.getElementById('qrcode');
+        const url = 'https://fantastic-gecko-3825ce.netlify.app/';
+        
+        QRCode.toCanvas(canvas, url, {
+            width: 300,
+            height: 300,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            margin: 2,
+            correctLevel: QRCode.CorrectLevel.H
+        }, function (error) {
+            if (error) {
+                console.error('QR Code generation failed:', error);
+                document.getElementById('qrcode').innerHTML = '<p style="color: red;">Failed to generate QR code</p>';
+            } else {
+                console.log('QR Code generated successfully!');
+            }
+        });
+        
+        // Download QR Code
+        function downloadQR() {
+            const canvas = document.getElementById('qrcode');
+            const link = document.createElement('a');
+            link.download = 'label-roh-spin-wheel-qr-code.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Print QR Code
+        function printQR() {
+            const canvas = document.getElementById('qrcode');
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Label Roh - Spin Wheel QR Code</title>
+                        <style>
+                            body { 
+                                font-family: Arial, sans-serif; 
+                                text-align: center; 
+                                padding: 2rem;
+                            }
+                            .logo { 
+                                font-size: 2rem; 
+                                font-weight: bold; 
+                                margin-bottom: 1rem; 
+                            }
+                            .url { 
+                                font-family: monospace; 
+                                margin: 1rem 0; 
+                                font-size: 0.9rem;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="logo">label roh</div>
+                        <h2>Spin to Win - Exclusive Discounts</h2>
+                        <img src="${canvas.toDataURL()}" alt="QR Code" style="max-width: 300px;">
+                        <div class="url">${url}</div>
+                        <p>Scan with your phone camera to access exclusive discounts!</p>
+                    </body>
+                </html>
+            `);
+            newWindow.document.close();
+            setTimeout(() => {
+                newWindow.print();
+                newWindow.close();
+            }, 500);
+        }
+        
+        // Generate different sized QR codes
+        function generateCustomQR(size, elementId) {
+            QRCode.toCanvas(document.getElementById(elementId), url, {
+                width: size,
+                height: size,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                margin: 2,
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    </script>
+</body>
+</html>
