@@ -60,13 +60,7 @@ emailForm.addEventListener('submit', async function(e) {
         console.error('Error saving email:', error);
         hideLoading();
         
-        // Enhanced error message for debugging mobile issues
-        const isMobile = /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-        const errorMsg = isMobile 
-            ? `Mobile Error: ${error.message}. Check console for details.`
-            : 'There was an error processing your request. Please try again.';
-        
-        alert(errorMsg);
+        alert('There was an error processing your request. Please try again.');
     }
 });
 
@@ -78,15 +72,8 @@ function isValidEmail(email) {
 
 // Database Functions
 async function saveEmailToDatabase(email) {
-    // Enhanced debugging for mobile devices
-    console.log('🔍 Email Save Debug Info:');
-    console.log('  Email:', email);
-    console.log('  Protocol:', window.location.protocol);
-    console.log('  Hostname:', window.location.hostname);
-    console.log('  Full URL:', window.location.href);
-    console.log('  User Agent:', navigator.userAgent);
-    console.log('  Is Mobile:', /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
-    console.log('  Screen Width:', window.innerWidth);
+    // Basic logging for production
+    console.log('📧 Saving email:', email);
     
     // Check if we're running locally via file:// protocol
     if (window.location.protocol === 'file:') {
@@ -101,8 +88,6 @@ async function saveEmailToDatabase(email) {
     
     // Always use save-email function to save to MongoDB
     const apiUrl = '/.netlify/functions/save-email';
-    console.log('📡 Making API call to:', apiUrl);
-    
     try {
         const requestData = {
             email: email,
@@ -111,8 +96,6 @@ async function saveEmailToDatabase(email) {
             screenWidth: window.innerWidth,
             isMobile: /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
         };
-        
-        console.log('📤 Request data:', requestData);
         
         const response = await fetch(apiUrl, {
             method: 'POST',
@@ -127,15 +110,12 @@ async function saveEmailToDatabase(email) {
         }
         
         const result = await response.json();
-        console.log('✅ Email API Response:', result);
         
         // Show user confirmation
         if (result.success) {
-            console.log('✅ Email stored in database:', email);
+            console.log('✅ Email saved successfully:', email);
             if (result.duplicate) {
                 console.log('📧 Email was already registered');
-            } else {
-                console.log('🆕 New email added to database');
             }
         }
         
@@ -376,7 +356,8 @@ addTouchSupport();
 function preloadAssets() {
     // Preload Google Fonts
     const fontLinks = [
-        'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap'
+        'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Callingstone&display=swap'
     ];
     
     fontLinks.forEach(link => {

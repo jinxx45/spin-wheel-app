@@ -64,16 +64,8 @@ exports.handler = async (event, context) => {
     const requestBody = JSON.parse(event.body);
     const { email, timestamp, userAgent, screenWidth, isMobile } = requestBody;
     
-    // Enhanced logging for debugging mobile issues
-    console.log('📧 NEW EMAIL SUBMISSION:');
-    console.log('  Email:', email);
-    console.log('  Timestamp:', timestamp || new Date().toISOString());
-    console.log('  User Agent:', userAgent || 'Unknown');
-    console.log('  Screen Width:', screenWidth || 'Unknown');
-    console.log('  Is Mobile:', isMobile || 'Unknown');
-    console.log('  IP Address:', event.headers['x-forwarded-for'] || 'Unknown');
-    console.log('  Referer:', event.headers.referer || 'Unknown');
-    console.log('----------------------------');
+    // Production logging
+    console.log('📧 Email submission:', email, isMobile ? '(Mobile)' : '(Desktop)');
 
     // Validate email
     if (!email || !isValidEmail(email)) {
