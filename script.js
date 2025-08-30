@@ -24,14 +24,33 @@ const segments = [
     { prize: '20% OFF', centerAngle: 330, type: 'discount' }    // Segment 6: 300-360 degrees (center at 330°) - DECOY
 ];
 
-// Actual possible winning segments (20% OFF excluded)
+// Weighted probability system - Free scrunchie is 1 in 300 chance
+const weightedSegments = [
+    // 5% OFF - Common (75 chances out of 300)
+    ...Array(75).fill({ prize: '5% OFF', centerAngle: 30, type: 'discount' }),
+    
+    // 10% OFF - Uncommon (60 chances out of 300)
+    ...Array(60).fill({ prize: '10% OFF', centerAngle: 90, type: 'discount' }),
+    
+    // Spin again - Common (75 chances out of 300)
+    ...Array(75).fill({ prize: 'Spin again', centerAngle: 150, type: 'retry' }),
+    
+    // Better luck next time - Common (89 chances out of 300)
+    ...Array(89).fill({ prize: 'Better luck next time', centerAngle: 210, type: 'nothing' }),
+    
+    // Free scrunchie - Ultra Rare (1 chance out of 300)
+    { prize: 'Free scrunchie', centerAngle: 270, type: 'gift' }
+    
+    // Note: 20% OFF at 330° is intentionally excluded from possible wins
+];
+
+// Backup segments for equal probability (if needed)
 const allSegments = [
     { prize: '5% OFF', centerAngle: 30, type: 'discount' },
     { prize: '10% OFF', centerAngle: 90, type: 'discount' },
     { prize: 'Spin again', centerAngle: 150, type: 'retry' },
     { prize: 'Better luck next time', centerAngle: 210, type: 'nothing' },
     { prize: 'Free scrunchie', centerAngle: 270, type: 'gift' }
-    // Note: 20% OFF at 330° is intentionally excluded from possible wins
 ];
 
 // Email Form Handler
@@ -94,7 +113,12 @@ async function saveEmailToDatabase(email) {
             timestamp: new Date().toISOString(),
             userAgent: navigator.userAgent,
             screenWidth: window.innerWidth,
-            isMobile: /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+            isMobile: /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent),
+            probabilityInfo: {
+                totalOutcomes: weightedSegments.length,
+                scrunchieChance: '1 in 300',
+                systemType: 'weighted'
+            }
         };
         
         const response = await fetch(apiUrl, {
@@ -173,8 +197,12 @@ function spinWheel() {
     spinButton.disabled = true;
     spinButton.textContent = 'SPINNING...';
     
-    // Randomly select a winning segment from allowed segments only
-    const winningSegment = allSegments[Math.floor(Math.random() * allSegments.length)];
+    // Randomly select a winning segment using weighted probability system
+    const winningSegment = weightedSegments[Math.floor(Math.random() * weightedSegments.length)];
+    
+    // Log the spin result for analytics (remove in production if desired)
+    console.log('🎯 Spin result:', winningSegment.prize, 
+                winningSegment.type === 'gift' ? '(RARE WIN!)' : '');
     
     // Get current rotation to maintain continuity
     const currentTransform = window.getComputedStyle(wheel).transform;
@@ -238,6 +266,10 @@ function showResult(prize, type) {
     } else if (type === 'gift') {
         resultText.textContent = 'Congratulations! You won a free gift!';
         if (resultEmailText) resultEmailText.style.display = 'block';
+        
+        // Special logging for rare scrunchie win
+        console.log('🎉 RARE SCRUNCHIE WIN! This happens only 1 in 300 spins!');
+        console.log('🏆 Winner email:', userEmail);
     } else {
         resultText.textContent = 'Your exclusive discount has been applied!';
         if (resultEmailText) resultEmailText.style.display = 'block';

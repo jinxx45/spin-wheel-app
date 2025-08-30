@@ -62,10 +62,13 @@ exports.handler = async (event, context) => {
   try {
     // Parse request body
     const requestBody = JSON.parse(event.body);
-    const { email, timestamp, userAgent, screenWidth, isMobile } = requestBody;
+    const { email, timestamp, userAgent, screenWidth, isMobile, probabilityInfo } = requestBody;
     
     // Production logging
     console.log('📧 Email submission:', email, isMobile ? '(Mobile)' : '(Desktop)');
+    if (probabilityInfo) {
+      console.log('🎲 Probability system:', probabilityInfo.systemType, '- Scrunchie chance:', probabilityInfo.scrunchieChance);
+    }
 
     // Validate email
     if (!email || !isValidEmail(email)) {
@@ -107,6 +110,7 @@ exports.handler = async (event, context) => {
       userAgent: userAgent || 'Unknown',
       screenWidth: screenWidth || null,
       isMobile: isMobile || false,
+      probabilitySystem: probabilityInfo || null,
       ipAddress: event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'Unknown',
       referer: event.headers.referer || 'Unknown',
       source: 'spin-wheel-promotion',
