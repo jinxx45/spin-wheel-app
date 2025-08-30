@@ -26,17 +26,17 @@ const segments = [
 
 // Weighted probability system - Free scrunchie is 1 in 300 chance
 const weightedSegments = [
-    // 5% OFF - Common (75 chances out of 300)
-    ...Array(75).fill({ prize: '5% OFF', centerAngle: 30, type: 'discount' }),
+    // 5% OFF - Reduced (50 chances out of 300)
+    ...Array(50).fill({ prize: '5% OFF', centerAngle: 30, type: 'discount' }),
     
-    // 10% OFF - Uncommon (60 chances out of 300)
-    ...Array(60).fill({ prize: '10% OFF', centerAngle: 90, type: 'discount' }),
+    // 10% OFF - Reduced (40 chances out of 300)
+    ...Array(40).fill({ prize: '10% OFF', centerAngle: 90, type: 'discount' }),
     
-    // Spin again - Common (75 chances out of 300)
-    ...Array(75).fill({ prize: 'Spin again', centerAngle: 150, type: 'retry' }),
+    // Spin again - Reduced (60 chances out of 300)
+    ...Array(60).fill({ prize: 'Spin again', centerAngle: 150, type: 'retry' }),
     
-    // Better luck next time - Common (89 chances out of 300)
-    ...Array(89).fill({ prize: 'Better luck next time', centerAngle: 210, type: 'nothing' }),
+    // Better luck next time - INCREASED (149 chances out of 300) - 49.67%
+    ...Array(149).fill({ prize: 'Better luck next time', centerAngle: 210, type: 'nothing' }),
     
     // Free scrunchie - Ultra Rare (1 chance out of 300)
     { prize: 'Free scrunchie', centerAngle: 270, type: 'gift' }
