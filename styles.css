@@ -20,6 +20,7 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height on mobile */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,6 +28,7 @@ body {
     visibility: hidden;
     transition: all 0.6s ease-in-out;
     z-index: 1;
+    overflow: hidden;
 }
 
 .section.active {
@@ -43,7 +45,9 @@ body {
 .container {
     text-align: center;
     max-width: 600px;
-    padding: 2rem;
+    width: 100%;
+    padding: clamp(1rem, 4vw, 2rem);
+    margin: 0 auto;
 }
 
 .logo h1 {
@@ -147,55 +151,71 @@ body {
 /* Wheel Section Styles */
 #wheel-section {
     background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+    padding: 1rem;
 }
 
 .wheel-container {
     text-align: center;
-    max-width: 800px;
-    padding: 2rem;
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
 }
 
 .wheel-header h2 {
     font-family: 'Poppins', sans-serif;
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
     font-weight: 600;
     margin-bottom: 1rem;
     color: #000000;
 }
 
 .wheel-header p {
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
     color: #666666;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+    max-width: 400px;
 }
 
 .wheel-wrapper {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 90vmin;
+    aspect-ratio: 1;
 }
 
 .wheel-wrapper::before {
     content: '';
     position: absolute;
-    bottom: -60px;
+    bottom: calc(-8% - 10px);
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 60px;
+    width: clamp(40px, 8%, 80px);
+    height: clamp(25px, 5%, 50px);
     background: linear-gradient(to bottom, #333, #000);
     clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
     z-index: 5;
 }
 
 .wheel {
-    width: 600px;
-    height: 600px;
+    width: 100%;
+    height: 100%;
+    max-width: 90vmin;
+    max-height: 90vmin;
+    aspect-ratio: 1;
     border-radius: 50%;
     position: relative;
     overflow: hidden;
-    border: 8px solid #000000;
+    border: clamp(4px, 1.5vw, 8px) solid #000000;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-    transition: transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 4s cubic-bezier(0.23, 1, 0.32, 1);
     background: conic-gradient(
         from 0deg,
         #000000 0deg 60deg,
@@ -207,30 +227,7 @@ body {
     );
 }
 
-.wheel::before {
-    content: '';
-    position: absolute;
-    top: -15px;
-    left: -15px;
-    right: -15px;
-    bottom: -15px;
-    border-radius: 50%;
-    background: 
-        radial-gradient(circle at 50% 5%, #000 8px, transparent 8px),
-        radial-gradient(circle at 86.6% 25%, #000 8px, transparent 8px),
-        radial-gradient(circle at 86.6% 75%, #000 8px, transparent 8px),
-        radial-gradient(circle at 50% 95%, #000 8px, transparent 8px),
-        radial-gradient(circle at 13.4% 75%, #000 8px, transparent 8px),
-        radial-gradient(circle at 13.4% 25%, #000 8px, transparent 8px),
-        radial-gradient(circle at 75% 13.4%, #000 8px, transparent 8px),
-        radial-gradient(circle at 75% 86.6%, #000 8px, transparent 8px),
-        radial-gradient(circle at 25% 13.4%, #000 8px, transparent 8px),
-        radial-gradient(circle at 25% 86.6%, #000 8px, transparent 8px),
-        radial-gradient(circle at 93.3% 50%, #000 8px, transparent 8px),
-        radial-gradient(circle at 6.7% 50%, #000 8px, transparent 8px);
-    z-index: -1;
-    pointer-events: none;
-}
+/* Removed the decorative dots around the wheel to prevent visual issues during rotation */
 
 .wheel-segment {
     position: absolute;
@@ -241,54 +238,54 @@ body {
     justify-content: center;
     font-family: 'Poppins', sans-serif;
     font-weight: 800;
-    font-size: 1.4rem;
+    font-size: clamp(0.8rem, 2.5vw, 1.4rem);
     text-align: center;
     pointer-events: none;
 }
 
 .segment-1 {
     color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
     transform: rotate(30deg);
 }
 
 .segment-2 {
     color: #000000;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
     transform: rotate(90deg);
 }
 
 .segment-3 {
     color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
     transform: rotate(150deg);
 }
 
 .segment-4 {
     color: #000000;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
     transform: rotate(210deg);
 }
 
 .segment-5 {
     color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
     transform: rotate(270deg);
 }
 
 .segment-6 {
     color: #000000;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
     transform: rotate(330deg);
 }
 
 .wheel-segment span {
     position: absolute;
-    top: 20%;
+    top: clamp(15%, 20%, 25%);
     left: 50%;
     transform: translateX(-50%) rotate(-90deg);
     transform-origin: center center;
-    font-size: 1.2rem;
+    font-size: clamp(0.7rem, 2.2vw, 1.2rem);
     font-weight: 800;
     line-height: 1.1;
     white-space: nowrap;
@@ -299,26 +296,26 @@ body {
 
 .segment-3 span,
 .segment-4 span {
-    font-size: 1.1rem;
+    font-size: clamp(0.6rem, 2vw, 1.1rem);
     line-height: 0.9;
-    top: 16%;
+    top: clamp(12%, 16%, 20%);
 }
 
 .segment-5 span {
-    font-size: 1.15rem;
-    top: 17%;
+    font-size: clamp(0.65rem, 2.1vw, 1.15rem);
+    top: clamp(13%, 17%, 21%);
 }
 
 .wheel-pointer {
     position: absolute;
-    top: -10px;
+    top: clamp(-8px, -1.5vw, -12px);
     left: 50%;
     transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 25px solid #000000;
+    border-left: clamp(10px, 2.5vw, 15px) solid transparent;
+    border-right: clamp(10px, 2.5vw, 15px) solid transparent;
+    border-top: clamp(18px, 4vw, 25px) solid #000000;
     z-index: 10;
 }
 
@@ -327,24 +324,30 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
+    width: clamp(60px, 15vw, 120px);
+    height: clamp(60px, 15vw, 120px);
     border-radius: 50%;
     background-color: #000000;
     color: #ffffff;
-    border: 6px solid #ffffff;
+    border: clamp(3px, 1vw, 6px) solid #ffffff;
     font-family: 'Poppins', sans-serif;
-    font-size: 1.3rem;
+    font-size: clamp(0.7rem, 2.2vw, 1.3rem);
     font-weight: 700;
     cursor: pointer;
     z-index: 10;
     transition: all 0.3s ease;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .wheel-spin-btn:hover {
     background-color: #333333;
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.wheel-spin-btn:active {
+    transform: translate(-50%, -50%) scale(0.95);
 }
 
 .wheel-spin-btn:disabled {
@@ -360,7 +363,9 @@ body {
 .result-container {
     text-align: center;
     max-width: 600px;
-    padding: 2rem;
+    width: 100%;
+    padding: clamp(1rem, 4vw, 2rem);
+    margin: 0 auto;
 }
 
 .result-content h2 {
@@ -412,47 +417,7 @@ body {
     font-weight: 600;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-}
-
-.shop-now-btn, .new-spin-btn {
-    padding: 1rem 2rem;
-    border: 2px solid #000000;
-    border-radius: 50px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 140px;
-}
-
-.shop-now-btn {
-    background-color: #000000;
-    color: #ffffff;
-}
-
-.shop-now-btn:hover {
-    background-color: #333333;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.new-spin-btn {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-.new-spin-btn:hover {
-    background-color: #f8f8f8;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
+/* Action buttons removed - no buttons after wheel spin */
 
 /* Loading Overlay */
 .loading-overlay {
@@ -498,155 +463,32 @@ body {
     color: #000000;
 }
 
-/* Responsive Design */
+/* Responsive Design - Mobile First Approach */
 @media (max-width: 768px) {
     .logo h1 {
-        font-size: 3rem;
+        font-size: clamp(2.5rem, 8vw, 3.5rem);
     }
     
     .promotion-content h2 {
-        font-size: 2rem;
-    }
-    
-    .wheel-container {
-        padding: 1rem;
-        max-width: 100%;
-    }
-    
-    .wheel-wrapper {
-        margin: 0 auto;
-        max-width: 100%;
-    }
-    
-    .wheel {
-        width: 380px;
-        height: 380px;
-        max-width: 90vw;
-        max-height: 90vw;
-    }
-    
-    .wheel-segment span {
-        font-size: 1rem;
-        top: 18%;
-    }
-    
-    .segment-3 span,
-    .segment-4 span {
-        font-size: 0.85rem;
-        line-height: 0.9;
-        top: 16%;
-    }
-    
-    .segment-5 span {
-        font-size: 0.9rem;
-        top: 17%;
-    }
-    
-    .wheel-spin-btn {
-        width: 70px;
-        height: 70px;
-        font-size: 0.9rem;
-    }
-    
-    .wheel-wrapper::before {
-        width: 80px;
-        height: 50px;
-        bottom: -50px;
+        font-size: clamp(1.8rem, 6vw, 2.2rem);
     }
     
     .result-content h2 {
-        font-size: 2.5rem;
+        font-size: clamp(2rem, 7vw, 2.8rem);
     }
     
     #discount-amount {
-        font-size: 3rem;
+        font-size: clamp(2.5rem, 8vw, 3.5rem);
     }
     
     .discount-text {
-        font-size: 1.5rem;
+        font-size: clamp(1.2rem, 4vw, 1.8rem);
     }
     
-    .action-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .shop-now-btn, .new-spin-btn {
-        width: 200px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container, .wheel-container, .result-container {
-        padding: 1rem;
-    }
-    
-    .wheel-container {
-        padding: 0.5rem;
-    }
-    
-    .wheel-header h2 {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .wheel-header p {
-        margin-bottom: 2rem;
-        font-size: 1rem;
-    }
-    
-    .wheel {
-        width: 320px;
-        height: 320px;
-        max-width: 85vw;
-        max-height: 85vw;
-        border-width: 6px;
-    }
-    
-    .wheel-segment {
-        font-size: 1rem;
-    }
-    
-    .wheel-segment span {
-        font-size: 0.8rem;
-        font-weight: 700;
-        top: 15%;
-        line-height: 1.1;
-    }
-    
-    .segment-3 span,
-    .segment-4 span {
-        font-size: 0.7rem;
-        line-height: 0.9;
-        top: 13%;
-    }
-    
-    .segment-5 span {
-        font-size: 0.75rem;
-        top: 14%;
-    }
-    
-    .wheel-spin-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 0.8rem;
-        border-width: 4px;
-    }
-    
-    .wheel-wrapper::before {
-        width: 60px;
-        height: 40px;
-        bottom: -40px;
-    }
-    
-    .wheel-pointer {
-        border-left-width: 12px;
-        border-right-width: 12px;
-        border-top-width: 20px;
-    }
+    /* Button styles removed */
     
     .input-group {
-        gap: 0.5rem;
+        gap: 1rem;
         width: 100%;
     }
     
@@ -658,68 +500,15 @@ body {
     .spin-btn {
         width: 100%;
         min-width: unset;
+        max-width: 250px;
     }
 }
 
-/* Extra small screens */
-@media (max-width: 360px) {
-    .wheel {
-        width: 280px;
-        height: 280px;
-        max-width: 80vw;
-        max-height: 80vw;
-        border-width: 4px;
-    }
-    
-    .wheel-segment span {
-        font-size: 0.65rem;
-        font-weight: 600;
-        top: 10%;
-    }
-    
-    .segment-3 span,
-    .segment-4 span {
-        font-size: 0.55rem;
-        top: 8%;
-    }
-    
-    .segment-5 span {
-        font-size: 0.6rem;
-        top: 9%;
-    }
-    
-    .wheel-spin-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 0.7rem;
-        border-width: 3px;
-    }
-    
-    .wheel-wrapper::before {
-        width: 50px;
-        height: 35px;
-        bottom: -35px;
-    }
-    
-    .wheel-pointer {
-        border-left-width: 10px;
-        border-right-width: 10px;
-        border-top-width: 18px;
-    }
-    
-    .wheel-header h2 {
-        font-size: 1.7rem;
-    }
-    
-    .wheel-header p {
-        font-size: 0.9rem;
-    }
-}
-
-/* Landscape orientation on mobile */
+/* Landscape orientation on mobile devices */
 @media (max-height: 600px) and (orientation: landscape) {
     .wheel-container {
         padding: 0.5rem;
+        min-height: auto;
     }
     
     .wheel-header {
@@ -727,28 +516,16 @@ body {
     }
     
     .wheel-header h2 {
-        font-size: 1.5rem;
-        margin-bottom: 0.25rem;
+        font-size: clamp(1.3rem, 4vw, 1.8rem);
+        margin-bottom: 0.5rem;
     }
     
     .wheel-header p {
-        font-size: 0.9rem;
+        font-size: clamp(0.8rem, 2.5vw, 1rem);
         margin-bottom: 1rem;
     }
     
-    .wheel {
-        width: 250px;
-        height: 250px;
-    }
-    
-    .wheel-segment span {
-        font-size: 0.7rem;
-        top: 12%;
-    }
-    
-    .wheel-spin-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 0.8rem;
+    .wheel-wrapper {
+        max-width: 70vmin;
     }
 }

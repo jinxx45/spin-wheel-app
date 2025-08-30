@@ -82,9 +82,8 @@ async function saveEmailToDatabase(email) {
         });
     }
     
-    // Use different functions based on environment
-    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-    const apiUrl = isProduction ? '/.netlify/functions/save-email' : '/.netlify/functions/email-notify';
+    // Always use save-email function to save to MongoDB
+    const apiUrl = '/.netlify/functions/save-email';
     
     try {
         const response = await fetch(apiUrl, {
@@ -166,17 +165,29 @@ function spinWheel() {
     // Randomly select a winning segment from allowed segments only
     const winningSegment = allSegments[Math.floor(Math.random() * allSegments.length)];
     
+    // Get current rotation to maintain continuity
+    const currentTransform = window.getComputedStyle(wheel).transform;
+    let currentRotation = 0;
+    
+    if (currentTransform !== 'none') {
+        const values = currentTransform.split('(')[1].split(')')[0].split(',');
+        const a = values[0];
+        const b = values[1];
+        currentRotation = Math.round(Math.atan2(b, a) * (180/Math.PI));
+    }
+    
     // Calculate the final rotation
-    const baseRotations = 5; // Number of full rotations for dramatic effect
-    const randomOffset = Math.random() * 30 - 15; // Add randomness (-15 to +15 degrees)
+    const baseRotations = Math.floor(Math.random() * 3) + 4; // 4-6 full rotations for variety
+    const randomOffset = Math.random() * 20 - 10; // Smaller randomness for better accuracy
     
     // Calculate target angle - we want the winning segment's center to align with the pointer (top)
     // The pointer is at 0 degrees (12 o'clock), so we need to rotate the wheel
     // so that the winning segment's center angle points to the top
     const targetAngle = 360 - winningSegment.centerAngle + randomOffset;
-    const finalRotation = (baseRotations * 360) + targetAngle;
+    const finalRotation = currentRotation + (baseRotations * 360) + targetAngle;
     
-    // Apply rotation
+    // Apply rotation with better timing
+    wheel.style.transition = 'transform 4s cubic-bezier(0.23, 1, 0.32, 1)';
     wheel.style.transform = `rotate(${finalRotation}deg)`;
     
     // Wait for animation to complete
@@ -185,7 +196,17 @@ function spinWheel() {
         isSpinning = false;
         spinButton.disabled = false;
         spinButton.textContent = 'SPIN';
-    }, 3000);
+        
+        // Normalize rotation to prevent huge values accumulating
+        const normalizedRotation = finalRotation % 360;
+        wheel.style.transition = 'none';
+        wheel.style.transform = `rotate(${normalizedRotation}deg)`;
+        
+        // Re-enable transitions after a brief moment
+        setTimeout(() => {
+            wheel.style.transition = 'transform 4s cubic-bezier(0.23, 1, 0.32, 1)';
+        }, 50);
+    }, 4000);
 }
 
 // Show Result
@@ -196,24 +217,19 @@ function showResult(prize, type) {
     // Update result text based on prize type
     const resultText = document.querySelector('.result-content > p');
     const resultEmailText = document.querySelector('.result-email');
-    const shopButton = document.querySelector('.shop-now-btn');
     
     if (type === 'retry') {
         resultText.textContent = 'Spin the wheel again for another chance!';
         if (resultEmailText) resultEmailText.style.display = 'none';
-        if (shopButton) shopButton.textContent = 'Spin Again';
     } else if (type === 'nothing') {
-        resultText.textContent = 'Don\'t worry, you can try again later!';
+        resultText.textContent = 'Better luck next time!';
         if (resultEmailText) resultEmailText.style.display = 'none';
-        if (shopButton) shopButton.textContent = 'Try Again';
     } else if (type === 'gift') {
         resultText.textContent = 'Congratulations! You won a free gift!';
         if (resultEmailText) resultEmailText.style.display = 'block';
-        if (shopButton) shopButton.textContent = 'Claim Gift';
     } else {
         resultText.textContent = 'Your exclusive discount has been applied!';
         if (resultEmailText) resultEmailText.style.display = 'block';
-        if (shopButton) shopButton.textContent = 'Shop Now';
     }
     
     setTimeout(() => {
@@ -228,7 +244,8 @@ function resetApp() {
     isSpinning = false;
     emailInput.value = '';
     
-    // Reset wheel rotation
+    // Reset wheel rotation smoothly
+    wheel.style.transition = 'transform 1s ease-out';
     wheel.style.transform = 'rotate(0deg)';
     
     // Reset sections
@@ -236,42 +253,16 @@ function resetApp() {
     wheelSection.classList.remove('active');
     setTimeout(() => {
         emailSection.classList.add('active');
+        // Restore normal transition after reset
+        setTimeout(() => {
+            wheel.style.transition = 'transform 4s cubic-bezier(0.23, 1, 0.32, 1)';
+        }, 1000);
     }, 300);
 }
 
-// Shop Now Button Handler - Use event delegation to handle dynamically added button
-document.addEventListener('click', function(e) {
-    if (e.target && e.target.classList.contains('shop-now-btn')) {
-        const prize = discountAmount.textContent;
-        const buttonText = e.target.textContent;
-        
-        if (buttonText === 'Spin Again' || buttonText === 'Try Again') {
-            // Reset to wheel section for another spin
-            resetToWheel();
-        } else if (buttonText === 'Claim Gift') {
-            alert(`Congratulations! Your free scrunchie will be sent to ${userEmail}. Thank you for playing!`);
-            setTimeout(() => {
-                resetApp();
-            }, 2000);
-        } else {
-            // Regular discount
-            alert(`Congratulations! You have a ${prize}! Redirecting to shop...`);
-            setTimeout(() => {
-                resetApp();
-            }, 2000);
-        }
-    }
-});
+// No button handler needed - buttons removed
 
-// Reset to wheel section for "Spin Again" results
-function resetToWheel() {
-    resultSection.classList.remove('active');
-    setTimeout(() => {
-        wheelSection.classList.add('active');
-        // Reset wheel rotation
-        wheel.style.transform = 'rotate(0deg)';
-    }, 300);
-}
+// Function removed - no longer needed as we use resetApp() for new games
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', function() {
@@ -280,8 +271,13 @@ document.addEventListener('DOMContentLoaded', function() {
     wheelSection.classList.remove('active');
     resultSection.classList.remove('active');
     
-    // Focus on email input
-    emailInput.focus();
+    // Focus on email input (but not on mobile to prevent keyboard popup)
+    if (window.innerWidth > 768) {
+        emailInput.focus();
+    }
+    
+    // Setup touch support
+    addTouchSupport();
 });
 
 // Add some visual feedback for better UX
@@ -319,6 +315,31 @@ document.addEventListener('keydown', function(e) {
 
 // Add smooth scrolling and better mobile experience
 document.addEventListener('touchstart', function() {}, {passive: true});
+
+// Improve touch interactions for mobile
+function addTouchSupport() {
+    // Prevent zoom on double tap for spin button
+    const spinBtn = document.getElementById('spin-button');
+    if (spinBtn) {
+        spinBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            if (!isSpinning) {
+                spinWheel();
+            }
+        }, {passive: false});
+    }
+    
+    // Prevent scrolling when touching the wheel
+    const wheelElement = document.getElementById('wheel');
+    if (wheelElement) {
+        wheelElement.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, {passive: false});
+    }
+}
+
+// Call touch support setup
+addTouchSupport();
 
 // Preload images and fonts for better performance
 function preloadAssets() {

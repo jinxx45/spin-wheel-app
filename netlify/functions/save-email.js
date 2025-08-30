@@ -26,10 +26,7 @@ async function connectToDatabase() {
     throw new Error('MONGODB_URI environment variable is not set');
   }
 
-  const client = new MongoClient(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const client = new MongoClient(MONGODB_URI);
 
   await client.connect();
   const db = client.db(DB_NAME);
