@@ -62,7 +62,18 @@ exports.handler = async (event, context) => {
   try {
     // Parse request body
     const requestBody = JSON.parse(event.body);
-    const { email, timestamp, userAgent } = requestBody;
+    const { email, timestamp, userAgent, screenWidth, isMobile } = requestBody;
+    
+    // Enhanced logging for debugging mobile issues
+    console.log('📧 NEW EMAIL SUBMISSION:');
+    console.log('  Email:', email);
+    console.log('  Timestamp:', timestamp || new Date().toISOString());
+    console.log('  User Agent:', userAgent || 'Unknown');
+    console.log('  Screen Width:', screenWidth || 'Unknown');
+    console.log('  Is Mobile:', isMobile || 'Unknown');
+    console.log('  IP Address:', event.headers['x-forwarded-for'] || 'Unknown');
+    console.log('  Referer:', event.headers.referer || 'Unknown');
+    console.log('----------------------------');
 
     // Validate email
     if (!email || !isValidEmail(email)) {
@@ -102,7 +113,10 @@ exports.handler = async (event, context) => {
       originalEmail: email,
       timestamp: timestamp || new Date().toISOString(),
       userAgent: userAgent || 'Unknown',
+      screenWidth: screenWidth || null,
+      isMobile: isMobile || false,
       ipAddress: event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'Unknown',
+      referer: event.headers.referer || 'Unknown',
       source: 'spin-wheel-promotion',
       createdAt: new Date()
     };

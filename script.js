@@ -59,7 +59,14 @@ emailForm.addEventListener('submit', async function(e) {
     } catch (error) {
         console.error('Error saving email:', error);
         hideLoading();
-        alert('There was an error processing your request. Please try again.');
+        
+        // Enhanced error message for debugging mobile issues
+        const isMobile = /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const errorMsg = isMobile 
+            ? `Mobile Error: ${error.message}. Check console for details.`
+            : 'There was an error processing your request. Please try again.';
+        
+        alert(errorMsg);
     }
 });
 
@@ -71,9 +78,19 @@ function isValidEmail(email) {
 
 // Database Functions
 async function saveEmailToDatabase(email) {
+    // Enhanced debugging for mobile devices
+    console.log('🔍 Email Save Debug Info:');
+    console.log('  Email:', email);
+    console.log('  Protocol:', window.location.protocol);
+    console.log('  Hostname:', window.location.hostname);
+    console.log('  Full URL:', window.location.href);
+    console.log('  User Agent:', navigator.userAgent);
+    console.log('  Is Mobile:', /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+    console.log('  Screen Width:', window.innerWidth);
+    
     // Check if we're running locally via file:// protocol
     if (window.location.protocol === 'file:') {
-        console.log('Running locally - email would be saved:', email);
+        console.log('⚠️ File protocol detected - email would be saved locally:', email);
         // Simulate a successful save for local development
         return new Promise(resolve => {
             setTimeout(() => {
@@ -84,18 +101,25 @@ async function saveEmailToDatabase(email) {
     
     // Always use save-email function to save to MongoDB
     const apiUrl = '/.netlify/functions/save-email';
+    console.log('📡 Making API call to:', apiUrl);
     
     try {
+        const requestData = {
+            email: email,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            screenWidth: window.innerWidth,
+            isMobile: /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+        };
+        
+        console.log('📤 Request data:', requestData);
+        
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
-                email: email,
-                timestamp: new Date().toISOString(),
-                userAgent: navigator.userAgent
-            })
+            body: JSON.stringify(requestData)
         });
         
         if (!response.ok) {
@@ -103,7 +127,7 @@ async function saveEmailToDatabase(email) {
         }
         
         const result = await response.json();
-        console.log('Email saved successfully:', result);
+        console.log('✅ Email API Response:', result);
         
         // Show user confirmation
         if (result.success) {
@@ -117,7 +141,14 @@ async function saveEmailToDatabase(email) {
         
         return result;
     } catch (error) {
-        console.error('Error saving email:', error);
+        console.error('❌ Error saving email:', error);
+        console.error('❌ Error details:', {
+            message: error.message,
+            stack: error.stack,
+            url: apiUrl,
+            email: email
+        });
+        
         // For demo purposes, we'll continue even if email saving fails
         // In production, you might want to handle this differently
         return { success: false, error: error.message };
