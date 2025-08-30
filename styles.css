@@ -1,9 +1,7 @@
 /* Custom Font - Callingstone */
 @font-face {
     font-family: 'Callingstone';
-    src: url('./fonts/Callingstone.woff2') format('woff2'),
-         url('./fonts/Callingstone.woff') format('woff'),
-         url('./fonts/Callingstone.ttf') format('truetype');
+    src: url('./fonts/Callingstone - Personal Use Only.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
